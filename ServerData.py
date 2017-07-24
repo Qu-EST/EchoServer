@@ -11,10 +11,10 @@ class Singelton(type):
             cls._instances[cls] = super(Singelton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
     
-class ServerData(Metaclsss = Singelton):
+class ServerData(metaclass = Singelton):
     '''class contains the data needed for the server
     '''
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.socket_list = set()
         self.send_queue = Queue(0)
         self.received_queue = Queue(0)

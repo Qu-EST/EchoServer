@@ -16,7 +16,7 @@ class ReceicerThread(Thread):
         while not self.switch.is_set():
             for sockets in self.serverdata.socket_list:
                 data = sockets.receive()
-                socdata=ServerData.SocData(sockets,data)
+                socdata = ServerData.SocData(sockets,data)
                 self.serverdata.received_queue.put(socdata)
 
                 
