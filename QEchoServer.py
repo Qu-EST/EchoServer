@@ -3,16 +3,28 @@ and communicate with the world using CLI'''
 import ServerData
 import SenderThread
 import ReceiverThread
+import ListenerThread
 import threading
 
 serverdata = ServerData.ServerData()
 off = False
+listener = None
+sender = None
+receiver = None
 
 def start_server():
     print("starting the server")
+    global listener, sender, receiver
+    listener=ListenerThread.ListenerThread()
+    listener.start()
+    sender=SenderThread.SenderThread()
+    sender.start()
+    receiver=ReceiverThread.ReceiverThread()
+    receiver.start()
 
 def connected_devices():
     print("listing the connected devices")
+    
 
 def list_threads():
     print("listing the open threads")
