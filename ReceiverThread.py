@@ -6,19 +6,19 @@ import socket
 class ReceiverThread(Thread):
     '''Thread to receive data'''
     def __init__(self):
-        super.__init__(self)
+        Thread.__init__(self)
         self.serverdata = ServerData.ServerData()
         self.switch = Event()
         self.switch.clear()
 
 
-    def start(self):
+    def run(self):
         ''' thread to receive the data from all the sockets'''
         while not self.switch.is_set():
-            
-            for sockets in self.serverdata.socket_list: # access the list with lock
+            tempsocklist = self.serverdata.socket_list.copy()
+            for sockets in tempsocklist: # access the list with lock
                 try:
-                    data = sockets.receive() # make it non-blocking, exception for receiving from a closed socket
+                    data = sockets.recv(1024) # make it non-blocking, exception for receiving from a closed socket
                 except socket.timeout:
                     pass#print("socket timeout exception")
                 except ConnectionResetError:
@@ -28,10 +28,12 @@ class ReceiverThread(Thread):
                     print("From received processor. got the error:{} hence disconnecting".format(e))
                     self.disconnect(sockets)
                 else:
+                    print(data)
                     data = data.decode('utf-8')
+                    data = data.strip()
                     if(data == 'online'):
                         self.serverdata.send_connecteds(sockets)
-                    if(data == ' '):
+                    if(data == ' '): #this has to be tested may lead to bug 
                         self.disconnect(sockets)
 
 

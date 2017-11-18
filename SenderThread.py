@@ -7,12 +7,13 @@ from threading import Thread, Event
 
 class SenderThread(Thread):
     '''Thread class to send the data'''
-    def init(self):
-        super.__init__(self)
-        self.serverdata = ServerData.ServerData()
+    def __init__(self):
         self.switch = Event()
         self.switch.clear()
-    def start(self):
+        Thread.__init__(self)
+        self.serverdata = ServerData.ServerData()
+        
+    def run(self):
         '''send the data to the client indefinitly'''
         while(not self.switch.is_set()):
             try:

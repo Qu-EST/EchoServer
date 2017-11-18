@@ -17,6 +17,7 @@ def start_server():
     global listener, sender, receiver
     listener=ListenerThread.ListenerThread()
     listener.start()
+    print("server started")
     sender=SenderThread.SenderThread()
     sender.start()
     receiver=ReceiverThread.ReceiverThread()
@@ -24,22 +25,28 @@ def start_server():
 
 def connected_devices():
     print("listing the connected devices")
-    
+    #print the socketlist
+    for s in serverdata.socket_list:
+        print(s)
 
 def list_threads():
     print("listing the open threads")
     print(threading.enumerate())
+    
 
 def stop_server():
     print("stopting the server")
     global off
     off = True
+    # call the other modules off
     
 while not off:
-    option = input('1. start server 2. list connected devices 3. list threads 4. stop server')
+    option = input('1. start server 2. list connected devices 3. list threads 4. stop server >')
     print("Yout option is {}".format(option))
     if option is "1":
         start_server()
+        print("started")
+        
     elif option is "2":
         connected_devices()
     elif option is "3":
